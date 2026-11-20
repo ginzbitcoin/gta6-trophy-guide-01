@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leonida Platinum Atlas — GTA VI Trophy Guide &amp; Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-text">
+    <p class="eyebrow">Grand Theft Auto VI &middot; PlayStation 5</p>
+    <h1>Leonida Platinum Atlas</h1>
+    <p class="tagline">Every one of the 55 trophies, with a guide in plain words, a tracker that remembers your progress, a roadmap to the platinum, and the missable ones flagged before you pass them.</p>
+  </div>
+  <div class="progress-card" aria-label="Progress">
+    <p class="progress-count" id="progress-count">0 of 55 earned</p>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <p class="progress-pct" id="progress-pct">0% to platinum</p>
+    <p class="progress-grades" id="progress-grades"></p>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <button type="button" data-view="guide" class="tab active">Guide &amp; tracker</button>
+  <button type="button" data-view="roadmap" class="tab">Roadmap to platinum</button>
+  <button type="button" data-view="missable" class="tab">Missable trophies</button>
+</nav>
+
+<section id="view-guide" class="view">
+  <div class="controls">
+    <label class="search">Search <input id="search" type="search" placeholder="Trophy name, guide or source…" autocomplete="off"></label>
+    <label>Kind
+      <select id="kind">
+        <option value="all">All kinds</option>
+        <option value="story">Story</option>
+        <option value="collectibles">Collectibles</option>
+        <option value="activities">Activities</option>
+        <option value="combat">Combat &amp; robberies</option>
+        <option value="money">Money &amp; property</option>
+        <option value="platinum">Platinum</option>
+      </select>
+    </label>
+    <label>Grade
+      <select id="grade">
+        <option value="all">All grades</option>
+        <option value="platinum">Platinum</option>
+        <option value="gold">Gold</option>
+        <option value="silver">Silver</option>
+        <option value="bronze">Bronze</option>
+      </select>
+    </label>
+    <label class="check"><input id="missable-only" type="checkbox"> Missable only</label>
+    <label class="check"><input id="hide-earned" type="checkbox"> Hide earned</label>
+    <label class="check"><input id="spoiler" type="checkbox"> Spoiler-free mode</label>
+    <button id="export" type="button">Export progress</button>
+    <label class="import">Import progress <input id="import" type="file" accept="application/json,.json"></label>
+  </div>
+  <p class="spoiler-note" id="spoiler-note" hidden>Spoiler-free mode is on: story trophy names and descriptions stay hidden until you earn them.</p>
+  <p class="result-count" id="result-count"></p>
+  <div class="trophy-list" id="trophy-list"></div>
+</section>
+
+<section id="view-roadmap" class="view" hidden>
+  <h2>Roadmap to the platinum</h2>
+  <p class="section-intro">Play in this order. The story first, then the stranger strands and character finales, then the activities, then the collectibles and the money goals, and the cleanup last. The platinum lands when the last stage is done, usually with A Long Road (100% completion).</p>
+  <ol class="roadmap" id="roadmap"></ol>
+</section>
+
+<section id="view-missable" class="view" hidden>
+  <h2>Missable trophies</h2>
+  <p class="section-intro">Five trophies look like one-time moments from their official descriptions, so do them when the chance appears instead of putting them off. Everything else can be earned at any time, even after the story ends. Missable flags here are drawn from the official descriptions, not from a finished playthrough.</p>
+  <div class="trophy-list" id="missable-list"></div>
+</section>
+
+<footer>
+  <p>Names, descriptions and grades are the official PlayStation list (via Exophase and PSNProfiles). Every guide is written in my own words for this entry and cites its sources beside it. No Rockstar Games logo, artwork or game screenshot is used here; the look is my own.</p>
+  <p>This guide is static files only and works with the network off. Your checklist is saved in this browser (localStorage) and never leaves it unless you export it.</p>
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>
