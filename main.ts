@@ -1,27 +1,27 @@
-import { cpSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { buildDossier, canonicalJson } from "./vendor/makefun-frontend.ts";
+import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildDossier } from "./vendor/makefun-frontend.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const outDir = process.env.OUTPUT_DIR || process.argv[2] || "/output";
-const caps = { text_max_bytes: 163840 };
+const repoRoot = resolve(here);
+const stageDir = join(repoRoot, ".dossier-stage");
+const outDir = "/output";
 
-mkdirSync(outDir, { recursive: true });
+if (existsSync(stageDir)) rmSync(stageDir, { recursive: true, force: true });
+mkdirSync(stageDir, { recursive: true });
+cpSync(join(repoRoot, "app"), join(stageDir, "app"), { recursive: true });
+cpSync(join(repoRoot, "screenshots"), join(stageDir, "screenshots"), { recursive: true });
 
-const appSrc = join(here, "app");
-const shotsSrc = join(here, "screenshots");
-cpSync(appSrc, join(outDir, "app"), { recursive: true });
-if (existsSync(shotsSrc)) {
-  cpSync(shotsSrc, join(outDir, "screenshots"), { recursive: true });
-}
-
-const dossier = await buildDossier(outDir, caps);
-if (dossier instanceof Uint8Array) {
-  writeFileSync(join(outDir, "dossier.json"), dossier);
-  console.log("dossier written to " + join(outDir, "dossier.json") + " (" + dossier.byteLength + " bytes)");
+const dossier = await buildDossier(stageDir, { text_max_bytes: 163840 });
+let text: string;
+if (typeof dossier === "string") {
+  text = dossier;
+} else if (dossier instanceof Uint8Array) {
+  text = new TextDecoder().decode(dossier);
 } else {
-  const text = typeof dossier === "string" ? dossier : JSON.stringify(dossier, null, 2);
-  writeFileSync(join(outDir, "dossier.json"), text);
-  console.log("dossier written to " + join(outDir, "dossier.json") + " (" + text.length + " bytes)");
+  text = canonicalJson(dossier);
 }
+mkdirSync(outDir, { recursive: true });
+writeFileSync(join(outDir, "dossier.json"), text);
+console.log("dossier written:", text.length, "bytes to", join(outDir, "dossier.json"));
