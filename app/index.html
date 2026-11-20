@@ -1,82 +1,90 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Leonida Platinum Atlas — GTA VI Trophy Guide &amp; Tracker</title>
+<title>Leonida Platinum Atlas - GTA VI Trophy Guide</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="masthead">
-  <div class="masthead-text">
+<header class="top">
+  <div class="top-inner">
     <p class="eyebrow">Grand Theft Auto VI &middot; PlayStation 5</p>
-    <h1>Leonida Platinum Atlas</h1>
-    <p class="tagline">Every one of the 55 trophies, with a guide in plain words, a tracker that remembers your progress, a roadmap to the platinum, and the missable ones flagged before you pass them.</p>
-  </div>
-  <div class="progress-card" aria-label="Progress">
-    <p class="progress-count" id="progress-count">0 of 55 earned</p>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <p class="progress-pct" id="progress-pct">0% to platinum</p>
-    <p class="progress-grades" id="progress-grades"></p>
+    <h1>Leonida <span>Platinum</span> Atlas</h1>
+    <p class="tagline">Your offline guide and tracker to all 55 PS5 trophies. No spoilers unless you ask for them.</p>
   </div>
 </header>
 
-<nav class="tabs" aria-label="Sections">
-  <button type="button" data-view="guide" class="tab active">Guide &amp; tracker</button>
-  <button type="button" data-view="roadmap" class="tab">Roadmap to platinum</button>
-  <button type="button" data-view="missable" class="tab">Missable trophies</button>
-</nav>
+<main>
+  <section class="progress-card" id="progressCard">
+    <div class="progress-big">
+      <span id="earnedCount">0</span><span class="of"> of 55 earned</span>
+    </div>
+    <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+    <p class="pct" id="pctText">0% to platinum</p>
+    <div class="grade-chips">
+      <span class="chip platinum">Platinum <b id="cPlatinum">0 / 1</b></span>
+      <span class="chip gold">Gold <b id="cGold">0 / 2</b></span>
+      <span class="chip silver">Silver <b id="cSilver">0 / 6</b></span>
+      <span class="chip bronze">Bronze <b id="cBronze">0 / 46</b></span>
+      <span class="chip missable">Missable <b id="cMissable">0 / 5</b></span>
+    </div>
+    <div class="actions">
+      <button id="exportBtn" type="button">Export JSON</button>
+      <button id="importBtn" type="button">Import JSON</button>
+      <input type="file" id="importFile" accept="application/json" hidden>
+      <button id="resetBtn" type="button">Reset tracker</button>
+    </div>
+  </section>
 
-<section id="view-guide" class="view">
-  <div class="controls">
-    <label class="search">Search <input id="search" type="search" placeholder="Trophy name, guide or source…" autocomplete="off"></label>
-    <label>Kind
-      <select id="kind">
-        <option value="all">All kinds</option>
-        <option value="story">Story</option>
-        <option value="collectibles">Collectibles</option>
-        <option value="activities">Activities</option>
-        <option value="combat">Combat &amp; robberies</option>
-        <option value="money">Money &amp; property</option>
-        <option value="platinum">Platinum</option>
-      </select>
-    </label>
-    <label>Grade
-      <select id="grade">
-        <option value="all">All grades</option>
+  <nav class="tabs">
+    <button class="tab active" data-tab="guide" type="button">Guide &amp; tracker</button>
+    <button class="tab" data-tab="roadmap" type="button">Roadmap to platinum</button>
+    <button class="tab" data-tab="missable" type="button">Missable trophies</button>
+  </nav>
+
+  <section class="panel active" id="panel-guide">
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="Search trophies by name or guide..." aria-label="Search trophies">
+      <select id="filterGrade" aria-label="Filter by grade">
+        <option value="">All grades</option>
         <option value="platinum">Platinum</option>
         <option value="gold">Gold</option>
         <option value="silver">Silver</option>
         <option value="bronze">Bronze</option>
       </select>
-    </label>
-    <label class="check"><input id="missable-only" type="checkbox"> Missable only</label>
-    <label class="check"><input id="hide-earned" type="checkbox"> Hide earned</label>
-    <label class="check"><input id="spoiler" type="checkbox"> Spoiler-free mode</label>
-    <button id="export" type="button">Export progress</button>
-    <label class="import">Import progress <input id="import" type="file" accept="application/json,.json"></label>
-  </div>
-  <p class="spoiler-note" id="spoiler-note" hidden>Spoiler-free mode is on: story trophy names and descriptions stay hidden until you earn them.</p>
-  <p class="result-count" id="result-count"></p>
-  <div class="trophy-list" id="trophy-list"></div>
-</section>
+      <select id="filterKind" aria-label="Filter by kind">
+        <option value="">All kinds</option>
+        <option value="story">Story</option>
+        <option value="collectible">Collectible</option>
+        <option value="activity">Activity</option>
+        <option value="combat">Combat</option>
+        <option value="exploration">Exploration</option>
+      </select>
+      <label class="check"><input type="checkbox" id="missableOnly"> Missable only</label>
+      <label class="check"><input type="checkbox" id="hideEarned"> Hide earned</label>
+      <label class="check"><input type="checkbox" id="spoilerFree"> Spoiler-free mode</label>
+    </div>
+    <p class="count-line" id="countLine"></p>
+    <div class="cards" id="cards"></div>
+  </section>
 
-<section id="view-roadmap" class="view" hidden>
-  <h2>Roadmap to the platinum</h2>
-  <p class="section-intro">Play in this order. The story first, then the stranger strands and character finales, then the activities, then the collectibles and the money goals, and the cleanup last. The platinum lands when the last stage is done, usually with A Long Road (100% completion).</p>
-  <ol class="roadmap" id="roadmap"></ol>
-</section>
+  <section class="panel" id="panel-roadmap">
+    <h2>Roadmap to platinum</h2>
+    <p class="intro">Seven stages, in order. Finish the missable trophies in stage 2 before they are gone for good.</p>
+    <ol class="steps" id="steps"></ol>
+  </section>
 
-<section id="view-missable" class="view" hidden>
-  <h2>Missable trophies</h2>
-  <p class="section-intro">Five trophies look like one-time moments from their official descriptions, so do them when the chance appears instead of putting them off. Everything else can be earned at any time, even after the story ends. Missable flags here are drawn from the official descriptions, not from a finished playthrough.</p>
-  <div class="trophy-list" id="missable-list"></div>
-</section>
+  <section class="panel" id="panel-missable">
+    <h2>Missable trophies</h2>
+    <p class="intro">Five trophies can only be earned at one specific story moment. Save before each one.</p>
+    <div class="cards" id="missableCards"></div>
+  </section>
+</main>
 
 <footer>
-  <p>Names, descriptions and grades are the official PlayStation list (via Exophase and PSNProfiles). Every guide is written in my own words for this entry and cites its sources beside it. No Rockstar Games logo, artwork or game screenshot is used here; the look is my own.</p>
-  <p>This guide is static files only and works with the network off. Your checklist is saved in this browser (localStorage) and never leaves it unless you export it.</p>
+  <p>Leonida Platinum Atlas is a fan-made guide. Grand Theft Auto and GTA are trademarks of Take-Two Interactive. Trophy names and descriptions follow the official PlayStation trophy list.</p>
 </footer>
-<script type="module" src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
