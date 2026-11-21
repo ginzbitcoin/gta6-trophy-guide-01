@@ -3,80 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Leonida Platinum Atlas - Panduan 55 Trofi GTA VI</title>
+<title>Leonida Platinum Atlas, Panduan 55 Trofi PS5 GTA VI</title>
+<meta name="description" content="Panduan dan tracker offline 55 trofi PS5 GTA VI: guide, roadmap 7 tahap, dan 5 trofi missable.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top">
-  <div class="brand">
-    <h1>Leonida Platinum Atlas</h1>
-    <p class="tag">Panduan dan tracker offline 55 trofi PS5 GTA VI</p>
+<header class="banner">
+  <div class="banner-inner">
+    <p class="eyebrow">GTA VI &middot; PS5 &middot; LEONIDA &middot; VICE CITY</p>
+    <h1>LEONIDA<br><span>PLATINUM ATLAS</span></h1>
+    <p class="subtitle">Panduan 55 trofi GTA VI, dari trofi pertama sampai platinum &ldquo;Vice Got a Price!&rdquo;. Tracker offline, roadmap 7 tahap, dan peringatan missable, semua dalam satu halaman.</p>
+    <div class="banner-stats" id="banner-stats">
+      <div class="stat"><strong>55</strong><span>Trofi</span></div>
+      <div class="stat"><strong>1</strong><span>Platinum</span></div>
+      <div class="stat"><strong>2</strong><span>Gold</span></div>
+      <div class="stat"><strong>6</strong><span>Silver</span></div>
+      <div class="stat"><strong>46</strong><span>Bronze</span></div>
+      <div class="stat danger"><strong>5</strong><span>Missable</span></div>
+    </div>
+    <div class="banner-cta">
+      <a class="btn primary" href="#tab=guide">Mulai Guide</a>
+      <a class="btn ghost" href="#tab=roadmap">Lihat Roadmap</a>
+      <a class="btn ghost" href="#tab=missable">Cek Missable</a>
+    </div>
   </div>
-  <div class="progress-card" id="progress-card">
-    <div class="big" id="earned-count">0 of 55 earned</div>
-    <div class="bar"><div class="fill" id="progress-fill" style="width:0%"></div></div>
-    <div class="pct" id="platinum-pct">0% to platinum</div>
-    <div class="counts" id="grade-counts">Platinum 0/1 - Gold 0/2 - Silver 0/6 - Bronze 0/46</div>
-  </div>
+  <div class="sun" aria-hidden="true"></div>
 </header>
 
-<nav class="tabs" role="tablist">
-  <button class="tab active" data-tab="guide" role="tab">Guide dan tracker</button>
-  <button class="tab" data-tab="roadmap" role="tab">Roadmap 7 tahap</button>
-  <button class="tab" data-tab="missable" role="tab">Missable 5 trofi</button>
-</nav>
-
 <main>
-  <section id="tab-guide" class="panel active">
-    <div class="toolbar">
-      <input id="search" type="search" placeholder="Cari trofi, misi, atau lokasi..." aria-label="Cari trofi">
+  <section class="progress-card" aria-label="Progres trofi">
+    <div>
+      <h2>Progres Kamu</h2>
+      <p id="progress-text">0 dari 55 trofi selesai (0%)</p>
+      <div class="bar"><div id="progress-fill" style="width:0%"></div></div>
+      <p class="muted" id="progress-detail">Platinum: 0 &middot; Gold: 0/2 &middot; Silver: 0/6 &middot; Bronze: 0/46 &middot; Missable: 0/5</p>
+    </div>
+    <div class="progress-actions">
+      <button id="export-btn" type="button">Export JSON</button>
+      <button id="import-btn" type="button">Import JSON</button>
+      <input id="import-file" type="file" accept="application/json,.json" hidden>
+      <button id="reset-btn" type="button">Reset</button>
+    </div>
+  </section>
+
+  <nav class="tabs" aria-label="Tab utama">
+    <button class="tab active" data-tab="guide" type="button">Guide dan Tracker</button>
+    <button class="tab" data-tab="roadmap" type="button">Roadmap 7 Tahap</button>
+    <button class="tab" data-tab="missable" type="button">Missable, 5 Trofi</button>
+  </nav>
+
+  <section id="panel-guide" class="panel active">
+    <div class="controls">
+      <input id="search" type="search" placeholder="Cari trofi, contoh: mobil, uang, pantai..." aria-label="Cari trofi">
       <select id="filter-grade" aria-label="Filter grade">
-        <option value="all">Semua grade</option>
+        <option value="">Semua grade</option>
         <option value="platinum">Platinum</option>
         <option value="gold">Gold</option>
         <option value="silver">Silver</option>
         <option value="bronze">Bronze</option>
       </select>
-      <select id="filter-state" aria-label="Filter status">
-        <option value="all">Semua status</option>
-        <option value="earned">Sudah diraih</option>
-        <option value="todo">Belum diraih</option>
-        <option value="missable">Missable</option>
+      <select id="filter-status" aria-label="Filter status">
+        <option value="">Semua status</option>
+        <option value="done">Sudah selesai</option>
+        <option value="todo">Belum selesai</option>
+        <option value="missable">Missable saja</option>
       </select>
-      <button id="export-btn" type="button">Export JSON</button>
-      <label class="import-label" for="import-file">Import JSON</label>
-      <input id="import-file" type="file" accept="application/json" hidden>
-      <button id="reset-btn" type="button">Reset</button>
+      <label class="spoiler"><input id="spoiler-toggle" type="checkbox"> Mode spoiler-free (sembunyikan panduan)</label>
     </div>
-    <p class="hint">Spoiler-free: deskripsi dan panduan tersembunyi sampai kartu dibuka. Klik kartu untuk melihat detail.</p>
-    <div id="cards" class="cards"></div>
-    <p id="empty" class="empty" hidden>Tidak ada trofi yang cocok dengan pencarian.</p>
+    <p class="muted" id="result-count"></p>
+    <div id="trophy-list" class="trophy-grid"></div>
   </section>
 
-  <section id="tab-roadmap" class="panel">
-    <h2>Roadmap 7 tahap</h2>
+  <section id="panel-roadmap" class="panel">
+    <h2>Roadmap 7 Tahap</h2>
+    <p class="muted">Ikuti urutan ini supaya tidak ada trofi yang terlewat. Tahap 1 sampai 3 dikerjakan sebelum misi penutup cerita.</p>
     <ol class="roadmap">
-      <li><h3>Tahap 1 - Prolog dan pengenalan</h3><p>Tamatkan prolog, misi Lucia dan Jason, dan ganti protagonis pertama kali. Amankan trofi Welcome to Leonida, Lucia's Way Out, Jason's Day Job, dan Two Sides.</p></li>
-      <li><h3>Tahap 2 - Cerita utama</h3><p>Mainkan semua misi cerita sebagai Lucia dan Jason. Jangan lewati misi sampingan yang muncul di tengah cerita.</p></li>
-      <li><h3>Tahap 3 - Missable, jangan terlewat</h3><p>Kerjakan 5 trofi missable sebelum titik tidak kembali: The Truth Is Out There, Catch Me If You Can, Capital Offense, Actions Speak Louder, dan Bad Luck I Guess. Simpan manual sebelum tiap misi yang bersangkutan.</p></li>
-      <li><h3>Tahap 4 - Perampokan dan bisnis</h3><p>Selesaikan semua perampokan besar dan buka kembali bisnis. Amankan First Score, Capital Offense, dan Back in Business.</p></li>
-      <li><h3>Tahap 5 - Jelajahi Leonida</h3><p>Kunjungi semua wilayah: Leonida Keys, Mount Kalaga, Port Gellhorn, Ambrosia, Grassrivers, dan Starfish Island. Beli safehouse di tiap distrik.</p></li>
-      <li><h3>Tahap 6 - Aktivitas dan koleksi</h3><p>Selesaikan aktivitas (golf, dart, biliar, memancing, berburu, balapan) dan kumpulkan paket tersembunyi. Amankan Collector dan Completionist's Path.</p></li>
-      <li><h3>Tahap 7 - Bersih-bersih dan platinum</h3><p>Cek statistik 100 persen, selesaikan sisa trofi, lalu raih Vice Got a Price!</p></li>
+      <li><strong>Tahap 1, Mulai dan Missable.</strong> Simpan game sebelum tiap misi cerita. Kerjakan Catch Me If You Can, Capital Offense, dan Actions Speak Louder di kesempatan pertama.</li>
+      <li><strong>Tahap 2, Cerita utama.</strong> Tamatkan misi Lucia dan Jason. Tandai trofi cerita di tracker begitu terbuka.</li>
+      <li><strong>Tahap 3, Missable tersisa.</strong> Selesaikan Bad Luck I Guess dan The Truth Is Out There sebelum misi penutup. Cek tab Missable.</li>
+      <li><strong>Tahap 4, Kendaraan dan tempur.</strong> Balapan, stunt, terbang, berlayar, dan latihan tembak. Gunakan lapangan tembak untuk headshot.</li>
+      <li><strong>Tahap 5, Uang dan aktivitas.</strong> Kasino, pekerjaan sampingan, gym, golf, tenis, memancing, dan radio. Kumpulkan uang untuk Big Spender.</li>
+      <li><strong>Tahap 6, Eksplorasi dan koleksi.</strong> Foto landmark, harta karun, item koleksi, dan semua distrik Leonida.</li>
+      <li><strong>Tahap 7, Bersih-bersih dan platinum.</strong> Cek tracker, selesaikan trofi yang tersisa, lalu klaim platinum Vice Got a Price!</li>
     </ol>
   </section>
 
-  <section id="tab-missable" class="panel">
-    <h2>Missable 5 trofi</h2>
-    <p class="warn">Lima trofi ini bisa gagal permanen bila dilewati. Simpan manual sebelum misi yang bersangkutan dan muat ulang bila gagal.</p>
-    <div id="missable-cards" class="cards"></div>
+  <section id="panel-missable" class="panel">
+    <h2>Missable, 5 Trofi yang Bisa Terlewat</h2>
+    <p class="muted">Lima trofi ini hanya bisa didapat di momen tertentu. Bila terlewat, butuh playthrough baru atau load save lama. Simpan game sebelum tiap momen di bawah.</p>
+    <div id="missable-list" class="trophy-grid"></div>
   </section>
+
+  <p class="footnote">Panduan penggemar tidak resmi. GTA, Grand Theft Auto, dan Vice City adalah merek Rockstar Games. Aplikasi ini offline, tidak memakai logo atau artwork Rockstar, dan progres hanya tersimpan di browser kamu (localStorage).</p>
 </main>
-
-<footer>
-  <p>Leonida Platinum Atlas - panduan komunitas, bukan produk resmi Rockstar Games. Data tersimpan lokal di browser (localStorage).</p>
-</footer>
-
 <script src="app.js"></script>
 </body>
 </html>
