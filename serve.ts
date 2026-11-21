@@ -1,15 +1,39 @@
-import { createServer } from 'node:http';
-import { readFileSync, existsSync } from 'node:fs';
-import { join, extname } from 'node:path';
+import { createServer } from "node:http";
+import { readFile } from "node:fs/promises";
+import { join, extname, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = process.argv[2] || 'app';
-const port = Number(process.argv[3] || 8080);
-const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png' };
+const here = dirname(fileURLToPath(import.meta.url));
+const root = join(here, "app");
+const port = 8000;
 
-createServer((req, res) => {
-  const path = decodeURIComponent((req.url || '/').split('?')[0]);
-  const file = join(root, path === '/' ? 'index.html' : path);
-  if (!existsSync(file)) { res.writeHead(404); res.end('Not found'); return; }
-  res.writeHead(200, { 'Content-Type': types[extname(file)] || 'application/octet-stream' });
-  res.end(readFileSync(file));
-}).listen(port, () => console.log('Serving ' + root + ' on http://127.0.0.1:' + port));
+const types = {
+  ".html": "text/html",
+  ".css": "text/css",
+  ".js": "text/javascript",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".svg": "image/svg+xml",
+};
+
+const server = createServer(async (req, res) => {
+  const path = req.url === "/" ? "/index.html" : (req.url || "/index.html").split("?")[0];
+  const file = join(root, path);
+  if (!file.startsWith(root)) {
+    res.writeHead(403);
+    res.end("Forbidden");
+    return;
+  }
+  try {
+    const body = await readFile(file);
+    res.writeHead(200, { "content-type": types[extname(file)] || "application/octet-stream" });
+    res.end(body);
+  } catch {
+    res.writeHead(404);
+    res.end("Not found");
+  }
+});
+
+server.listen(port, () => {
+  console.log("Leonida Platinum Atlas berjalan di http://localhost:" + port);
+});
